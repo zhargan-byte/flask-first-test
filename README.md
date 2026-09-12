@@ -22,7 +22,7 @@ The project intentionally contains one Flask route and one HTML template so new 
 ## Project structure
 
 ```text
-flask-app-ecs/
+flask-first-test/
 ├── app.py
 ├── Dockerfile
 ├── requirements.txt
@@ -86,8 +86,8 @@ Docker Desktop users should open Docker Desktop and wait until the Docker engine
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/zhargan-byte/flask-app-ecs.git
-cd flask-app-ecs
+git clone https://github.com/zhargan-byte/flask-first-test.git
+cd flask-first-test
 ```
 
 Alternatively, select **Code → Download ZIP** on GitHub, extract the archive, and open a terminal in the extracted folder.
