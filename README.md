@@ -21,12 +21,12 @@ If Git and Docker are already installed, follow these commands from start to fin
 git clone https://github.com/zhargan-byte/flask-first-test.git
 cd flask-first-test
 docker build -t flask-app .
-docker run -d -p 5000:5000 --name flask-container flask-app
+docker run -d -p 5001:5000 --name flask-container flask-app
 docker ps
 docker logs flask-container
 ```
 
-Open [http://localhost:5000](http://localhost:5000). A rotating Docker Flask card confirms that the application is running successfully.
+Open [http://localhost:5001](http://localhost:5001). A rotating Docker Flask card confirms that the application is running successfully.
 
 When finished, stop and remove the container:
 
@@ -36,6 +36,33 @@ docker rm flask-container
 ```
 
 The detailed guide below explains what every command does and how to resolve common problems.
+
+## Project scope
+
+`flask-first-test` is the simple first-program project in this repository. Its purpose is to teach one Flask route, one template, one Docker image, one container, and basic port mapping.
+
+It is separate from [dockerized-flask-app](https://github.com/zhargan-byte/dockerized-flask-app), which is a different production-minded portfolio project with Gunicorn, multiple routes, health checks, automated tests, and a larger responsive interface.
+
+When both projects run on the same computer:
+
+| Project | Local address | Purpose |
+| --- | --- | --- |
+| `flask-first-test` | [http://localhost:5001](http://localhost:5001) | Simple Flask and Docker learning project |
+| `dockerized-flask-app` | [http://localhost:5000](http://localhost:5000) | Separate production-minded Flask portfolio project |
+
+These localhost addresses refer to applications running on your own computer; GitHub hosts the source code, not the running containers.
+
+## Application output
+
+The card rotates between these two verified states while `flask-first-test` runs on `http://localhost:5001`.
+
+### Container running
+
+![Docker Flask container running successfully](screenshots/container-running.png)
+
+### Test successful
+
+![Docker Flask test completed successfully](screenshots/test-success.png)
 
 ## Features
 
@@ -59,6 +86,9 @@ flask-first-test/
 ├── .dockerignore
 ├── .gitattributes
 ├── .gitignore
+├── screenshots/
+│   ├── container-running.png
+│   └── test-success.png
 └── templates/
     └── index.html
 ```
@@ -84,59 +114,14 @@ flask-first-test/
 
 ```mermaid
 flowchart LR
-    B[Browser] -->|localhost:5000| H[Computer port 5000]
-    H -->|Docker port mapping| C[Container port 5000]
+    B[Browser] -->|localhost:5001| H[Computer port 5001]
+    H -->|5001:5000 port mapping| C[Container port 5000]
     C --> F[Flask application]
     F --> T[index.html]
     T --> B
 ```
 
-Flask listens on `0.0.0.0:5000` inside the container. The `-p 5000:5000` option connects port `5000` on your computer to port `5000` in the container.
-
-## Prerequisites and Docker installation
-
-You need [Git](https://git-scm.com/downloads) to clone the repository and Docker to build and run the container.
-
-### Windows
-
-1. Download [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/).
-2. Run `Docker Desktop Installer.exe` and follow the installation wizard.
-3. Use the WSL 2 backend when it is available on your system.
-4. Start Docker Desktop and wait until the engine reports that it is running.
-5. Open a new PowerShell or Command Prompt window.
-
-### macOS
-
-1. Download the correct [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/) installer for Apple silicon or Intel.
-2. Open the installer and move Docker to the Applications folder.
-3. Start Docker and complete the initial setup.
-4. Wait until Docker Desktop reports that the engine is running.
-
-### Linux
-
-Follow Docker's official [Docker Engine installation guide](https://docs.docker.com/engine/install/) and select your distribution. After installation, confirm the Docker service is running:
-
-```bash
-sudo systemctl status docker
-```
-
-If the service is stopped, start it:
-
-```bash
-sudo systemctl start docker
-```
-
-### Verify the tools
-
-Open a new terminal and run:
-
-```bash
-git --version
-docker --version
-docker run --rm hello-world
-```
-
-Successful output from `hello-world` confirms that the Docker client can communicate with the Docker engine. Depending on your Linux configuration, Docker commands may require `sudo`.
+Flask listens on `0.0.0.0:5000` inside the container. The `-p 5001:5000` option connects port `5001` on your computer to port `5000` in the container.
 
 ## Installation guide
 
@@ -178,12 +163,12 @@ Look for `flask-app` in the `REPOSITORY` column. A successful build normally end
 ### 3. Run the container
 
 ```bash
-docker run -d -p 5000:5000 --name flask-container flask-app
+docker run -d -p 5001:5000 --name flask-container flask-app
 ```
 
 - `docker run` creates and starts a container.
 - `-d` runs it in the background.
-- `-p 5000:5000` maps computer port `5000` to container port `5000`.
+- `-p 5001:5000` maps computer port `5001` to container port `5000`.
 - `--name flask-container` assigns a readable container name.
 - The final `flask-app` identifies the image to run.
 
@@ -193,13 +178,13 @@ docker run -d -p 5000:5000 --name flask-container flask-app
 docker ps
 ```
 
-The output should list `flask-container` with a mapping similar to `0.0.0.0:5000->5000/tcp`.
+The output should list `flask-container` with a mapping similar to `0.0.0.0:5001->5000/tcp`.
 
 If `flask-container` is not listed, run `docker ps -a` and then `docker logs flask-container` to identify why it stopped.
 
 ### 5. Access the application
 
-Open [http://localhost:5000](http://localhost:5000) in a browser.
+Open [http://localhost:5001](http://localhost:5001) in a browser.
 
 If the animated Docker Flask card appears, the image, container, port mapping, Flask server, and HTML template are working successfully.
 
@@ -250,7 +235,7 @@ The `flask-app` image remains available after the container is removed.
 | Command | Description |
 | --- | --- |
 | `docker build -t flask-app .` | Build the application image |
-| `docker run -d -p 5000:5000 --name flask-container flask-app` | Create and start the container |
+| `docker run -d -p 5001:5000 --name flask-container flask-app` | Create and start the container |
 | `docker ps` | List running containers |
 | `docker ps -a` | List running and stopped containers |
 | `docker logs flask-container` | Display application logs |
@@ -263,13 +248,13 @@ The `flask-app` image remains available after the container is removed.
 
 ## Understanding port mapping
 
-The value `5000:5000` follows this format:
+The value `5001:5000` follows this format:
 
 ```text
 HOST_PORT:CONTAINER_PORT
 ```
 
-- The first `5000` is the port opened on your computer.
+- `5001` is the port opened on your computer.
 - The second `5000` is the port where Flask listens inside the container.
 
 You can choose a different host port without modifying the application:
@@ -298,7 +283,7 @@ Start Docker Desktop and wait for the engine to become ready. On Linux, check th
 sudo systemctl status docker
 ```
 
-### Port 5000 is already in use
+### Port 5001 is already in use
 
 Use another host port:
 
@@ -349,7 +334,7 @@ The code is copied into the image during the build. Rebuild the image and recrea
 ```bash
 docker rm -f flask-container
 docker build -t flask-app .
-docker run -d -p 5000:5000 --name flask-container flask-app
+docker run -d -p 5001:5000 --name flask-container flask-app
 ```
 
 ## Successful deployment checklist
@@ -358,9 +343,9 @@ Your deployment is complete when all of these checks pass:
 
 - `docker images` lists the `flask-app` image.
 - `docker ps` lists the `flask-container` container.
-- The ports column shows host port `5000` mapped to container port `5000`.
+- The ports column shows host port `5001` mapped to container port `5000`.
 - `docker logs flask-container` shows Flask listening on `0.0.0.0:5000`.
-- [http://localhost:5000](http://localhost:5000) opens successfully.
+- [http://localhost:5001](http://localhost:5001) opens successfully.
 - The browser displays the Docker Flask success card.
 
 If one check fails, use the troubleshooting section above before moving to the next step.
