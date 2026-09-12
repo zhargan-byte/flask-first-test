@@ -9,6 +9,34 @@ A small, beginner-friendly Flask application that runs inside a Docker container
 
 The project intentionally contains one Flask route and one HTML template so new developers can focus on the core Flask and Docker concepts.
 
+**Public repository:** [github.com/zhargan-byte/flask-first-test](https://github.com/zhargan-byte/flask-first-test)
+
+No local Python installation is required for the Docker workflow. Docker downloads the Python runtime and Flask dependencies while building the image.
+
+## Quick start
+
+If Git and Docker are already installed, follow these commands from start to finish:
+
+```bash
+git clone https://github.com/zhargan-byte/flask-first-test.git
+cd flask-first-test
+docker build -t flask-app .
+docker run -d -p 5000:5000 --name flask-container flask-app
+docker ps
+docker logs flask-container
+```
+
+Open [http://localhost:5000](http://localhost:5000). A rotating Docker Flask card confirms that the application is running successfully.
+
+When finished, stop and remove the container:
+
+```bash
+docker stop flask-container
+docker rm flask-container
+```
+
+The detailed guide below explains what every command does and how to resolve common problems.
+
 ## Features
 
 - Minimal Flask application with a single home route
@@ -65,21 +93,50 @@ flowchart LR
 
 Flask listens on `0.0.0.0:5000` inside the container. The `-p 5000:5000` option connects port `5000` on your computer to port `5000` in the container.
 
-## Prerequisites
+## Prerequisites and Docker installation
 
-Install these tools before starting:
+You need [Git](https://git-scm.com/downloads) to clone the repository and Docker to build and run the container.
 
-- [Git](https://git-scm.com/downloads)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) for Windows or macOS, or Docker Engine for Linux
+### Windows
 
-Verify the installations:
+1. Download [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/).
+2. Run `Docker Desktop Installer.exe` and follow the installation wizard.
+3. Use the WSL 2 backend when it is available on your system.
+4. Start Docker Desktop and wait until the engine reports that it is running.
+5. Open a new PowerShell or Command Prompt window.
+
+### macOS
+
+1. Download the correct [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/) installer for Apple silicon or Intel.
+2. Open the installer and move Docker to the Applications folder.
+3. Start Docker and complete the initial setup.
+4. Wait until Docker Desktop reports that the engine is running.
+
+### Linux
+
+Follow Docker's official [Docker Engine installation guide](https://docs.docker.com/engine/install/) and select your distribution. After installation, confirm the Docker service is running:
+
+```bash
+sudo systemctl status docker
+```
+
+If the service is stopped, start it:
+
+```bash
+sudo systemctl start docker
+```
+
+### Verify the tools
+
+Open a new terminal and run:
 
 ```bash
 git --version
 docker --version
+docker run --rm hello-world
 ```
 
-Docker Desktop users should open Docker Desktop and wait until the Docker engine reports that it is running.
+Successful output from `hello-world` confirms that the Docker client can communicate with the Docker engine. Depending on your Linux configuration, Docker commands may require `sudo`.
 
 ## Installation guide
 
@@ -90,7 +147,13 @@ git clone https://github.com/zhargan-byte/flask-first-test.git
 cd flask-first-test
 ```
 
-Alternatively, select **Code → Download ZIP** on GitHub, extract the archive, and open a terminal in the extracted folder.
+To download without Git:
+
+1. Open the [public repository](https://github.com/zhargan-byte/flask-first-test).
+2. Select the green **Code** button.
+3. Select **Download ZIP**.
+4. Extract the downloaded archive.
+5. Open a terminal inside the extracted `flask-first-test-main` folder.
 
 ### 2. Build the Docker image
 
@@ -109,6 +172,8 @@ Confirm that the image exists:
 ```bash
 docker images
 ```
+
+Look for `flask-app` in the `REPOSITORY` column. A successful build normally ends with a message showing that the image was named `flask-app:latest`.
 
 ### 3. Run the container
 
@@ -129,6 +194,8 @@ docker ps
 ```
 
 The output should list `flask-container` with a mapping similar to `0.0.0.0:5000->5000/tcp`.
+
+If `flask-container` is not listed, run `docker ps -a` and then `docker logs flask-container` to identify why it stopped.
 
 ### 5. Access the application
 
@@ -284,6 +351,19 @@ docker rm -f flask-container
 docker build -t flask-app .
 docker run -d -p 5000:5000 --name flask-container flask-app
 ```
+
+## Successful deployment checklist
+
+Your deployment is complete when all of these checks pass:
+
+- `docker images` lists the `flask-app` image.
+- `docker ps` lists the `flask-container` container.
+- The ports column shows host port `5000` mapped to container port `5000`.
+- `docker logs flask-container` shows Flask listening on `0.0.0.0:5000`.
+- [http://localhost:5000](http://localhost:5000) opens successfully.
+- The browser displays the Docker Flask success card.
+
+If one check fails, use the troubleshooting section above before moving to the next step.
 
 ## Learning outcomes
 
