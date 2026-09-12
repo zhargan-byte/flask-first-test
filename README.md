@@ -3,6 +3,8 @@
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-3.1-000000?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![GitHub Release](https://img.shields.io/github/v/release/zhargan-byte/flask-first-test?logo=github)](https://github.com/zhargan-byte/flask-first-test/releases/latest)
+[![GitHub Container Registry](https://img.shields.io/badge/GHCR-Package-2496ED?logo=docker&logoColor=white)](https://github.com/zhargan-byte/flask-first-test/pkgs/container/flask-first-test)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 A small, beginner-friendly Flask application that runs inside a Docker container. This repository demonstrates the complete workflow from cloning source code to building an image, starting a container, mapping a port, and opening the application in a browser.
@@ -36,6 +38,17 @@ docker rm flask-container
 ```
 
 The detailed guide below explains what every command does and how to resolve common problems.
+
+## Run the published Docker image
+
+Versioned images are available from the [GitHub Container Registry package](https://github.com/zhargan-byte/flask-first-test/pkgs/container/flask-first-test). Pull and run the stable `v1.0.0` image without building it locally:
+
+```bash
+docker pull ghcr.io/zhargan-byte/flask-first-test:v1.0.0
+docker run -d -p 5001:5000 --name flask-container ghcr.io/zhargan-byte/flask-first-test:v1.0.0
+```
+
+Then open [http://localhost:5001](http://localhost:5001). The package is public, so downloading it does not require a GitHub login.
 
 ## Project scope
 

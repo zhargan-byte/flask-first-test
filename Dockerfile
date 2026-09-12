@@ -1,5 +1,9 @@
 FROM python:3.13-slim
 
+LABEL org.opencontainers.image.source="https://github.com/zhargan-byte/flask-first-test"
+LABEL org.opencontainers.image.description="A beginner-friendly Flask application for learning Docker fundamentals"
+LABEL org.opencontainers.image.licenses="MIT"
+
 WORKDIR /app
 
 COPY requirements.txt .
