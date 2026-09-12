@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments and local settings
+.venv/
+venv/
+env/
+.env
+
+# Test, coverage, and log output
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
