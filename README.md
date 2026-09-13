@@ -23,7 +23,7 @@ If Git and Docker are already installed, follow these commands from start to fin
 git clone https://github.com/zhargan-byte/flask-first-test.git
 cd flask-first-test
 docker build -t flask-app .
-docker run -d -p 5000:5000 --name flask-container flask-app
+docker run -d -p 5001:5000 --name flask-container flask-app
 docker ps
 docker logs flask-container
 ```
